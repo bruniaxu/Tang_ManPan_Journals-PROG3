@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
 
     void SpawnBombAtOffset(Vector3 inOffset)
     {
-        
+        Instantiate(bombPrefab, transform.position + inOffset, Quaternion.identity);
     }
 
 }
