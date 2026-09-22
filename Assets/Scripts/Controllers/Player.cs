@@ -39,4 +39,18 @@ public class Player : MonoBehaviour
         return outVector;
     }
 
+    void spawnBombTrail(float bombTrailSpacing, int numberOfTrailBomb)
+    {
+
+        Vector2 trailBombOffset = new Vector2();
+
+        for (int i = 1; i <= numberOfTrailBomb; i++)
+        {
+            trailBombOffset = Vector2.down * bombTrailSpacing * i;
+
+            SpawnBombAtOffset(trailBombOffset);
+        }
+
+    }
+
 }
