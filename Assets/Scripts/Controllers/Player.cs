@@ -36,7 +36,11 @@ public class Player : MonoBehaviour
         {
             SpawnBombOnRandomCorner(2f);
         }
-
+ 
+        if (Keyboard.current.wKey.wasPressedThisFrame)
+        {
+            WarpPlayer(enemyTransform, 1f);
+        }
     }
 
     void SpawnBombAtOffset(Vector3 inOffset)
@@ -91,6 +95,11 @@ public class Player : MonoBehaviour
         SpawnBombAtOffset(bombOffset);
 
         Debug.Log(cornerDirection);
+    }
+
+    void WarpPlayer(Transform target, float ratio)
+    {
+        transform.position = Vector3.Lerp(transform.position, target.position, ratio);
     }
 
 }
