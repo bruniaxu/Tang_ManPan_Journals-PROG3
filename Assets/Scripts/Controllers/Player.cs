@@ -8,6 +8,10 @@ public class Player : MonoBehaviour
     public GameObject bombPrefab;
     public List<Transform> asteroidTransforms;
 
+    public float bombTrailSpacing;
+    public int numberOfTrailBombs;
+
+
     void Start()
     {
         Debug.Log(NormalizeVector(new Vector2(3, 4)));
@@ -21,6 +25,13 @@ public class Player : MonoBehaviour
         if (Keyboard.current.bKey.wasPressedThisFrame)
         {
             SpawnBombAtOffset(Vector3.up);
+
+        }
+
+        if (Keyboard.current.tKey.wasPressedThisFrame)
+        {
+            spawnBombTrail(bombTrailSpacing, numberOfTrailBombs);
+
         }
 
     }
@@ -39,12 +50,12 @@ public class Player : MonoBehaviour
         return outVector;
     }
 
-    void spawnBombTrail(float bombTrailSpacing, int numberOfTrailBomb)
+    void spawnBombTrail(float bombTrailSpacing, int numberOfTrailBombs)
     {
 
         Vector2 trailBombOffset = new Vector2();
 
-        for (int i = 1; i <= numberOfTrailBomb; i++)
+        for (int i = 1; i <= numberOfTrailBombs; i++)
         {
             trailBombOffset = Vector2.down * bombTrailSpacing * i;
 
