@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
 
     public float bombTrailSpacing;
     public int numberOfTrailBombs;
+    public float inMaxRange;
 
 
     void Start()
@@ -44,7 +45,7 @@ public class Player : MonoBehaviour
 
         if (Keyboard.current.aKey.wasPressedThisFrame)
         {
-            DetectAsteroids(10f, asteroidTransforms);
+            DetectAsteroids(inMaxRange, asteroidTransforms);
         }
     }
 
@@ -106,21 +107,26 @@ public class Player : MonoBehaviour
     {
         transform.position = Vector3.Lerp(transform.position, target.position, ratio);
     }
+
+
+
     void DetectAsteroids(float inMaxRange, List<Transform> inAsteroids)
     {
-        foreach (Transform asteroid in asteroidTransforms)
+        for (int i = 0; i < inAsteroids.Count; i++)
         {
-            float distance = Vector3.Distance(transform.position, asteroid.position);
+            float distance = Vector3.Distance(transform.position, inAsteroids[i].position);
+
+            Vector3 direction = inAsteroids[i].position - transform.position;
+
+            Vector3 endPosition = transform.position + direction.normalized * 2.5f;
+
             if (distance <= inMaxRange)
             {
-                Vector3 direction = asteroid.position - transform.position;
-                direction = direction.normalized;
-                // Make the direction 2.5 units long
-                Vector3 lineDirection = direction * 2.5f;
-                Vector3 lineEnd = transform.position + lineDirection;
-                Debug.DrawLine(transform.position, lineEnd, Color.green, 1f);
+                Debug.DrawLine(transform.position, endPosition, Color.green);
             }
+
         }
-        
+
+
     }
 }
