@@ -4,17 +4,23 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    //wk2 in class
     public Transform enemyTransform;
     public GameObject bombPrefab;
     public List<Transform> asteroidTransforms;
 
+    #region journal 2
     public float bombTrailSpacing;
     public int numberOfTrailBombs;
     public float inMaxRange;
+    #endregion
 
+    //wk3 in class
+    public float moveSpeed = 1f;
 
     void Start()
     {
+        //wk2 in class
         Debug.Log(NormalizeVector(new Vector2(3, 4)));
         Debug.Log(NormalizeVector(new Vector2(-3, 2)));
         Debug.Log(NormalizeVector(new Vector2(1.5f, -3.5f)));
@@ -23,6 +29,8 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        #region Journal2
+        //wk2 in class
         if (Keyboard.current.bKey.wasPressedThisFrame)
         {
             SpawnBombAtOffset(Vector3.up);
@@ -47,8 +55,16 @@ public class Player : MonoBehaviour
         {
             DetectAsteroids(inMaxRange, asteroidTransforms);
         }
+        #endregion
+
+        //wk3 exe:player controller
+        PlayerMovement();
+       
+      
     }
 
+    #region Journal2
+    //wk2 in class
     void SpawnBombAtOffset(Vector3 inOffset)
     {
         Instantiate(bombPrefab, transform.position + inOffset, Quaternion.identity);
@@ -127,10 +143,30 @@ public class Player : MonoBehaviour
 
         }
     }
+    #endregion
 
-    void PlayerMovement()
+    //wk3 exe:player controller
+    private void PlayerMovement()
     {
+        if (Keyboard.current.leftArrowKey.isPressed)
+        {
+            transform.position += moveSpeed * Vector3.left;
+        }
 
+        if (Keyboard.current.rightArrowKey.isPressed)
+        {
+            transform.position += moveSpeed * Vector3.right;
+        }
+
+        if (Keyboard.current.upArrowKey.isPressed)
+        {
+            transform .position += moveSpeed * Vector3.up;
+        }
+
+        if (Keyboard.current.downArrowKey.isPressed)
+        {
+            transform.position += moveSpeed * Vector3.down;
+        }
     }
 
 }
