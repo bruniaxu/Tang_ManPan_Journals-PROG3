@@ -16,7 +16,11 @@ public class Player : MonoBehaviour
     #endregion
 
     //wk3 in class
-    public float moveSpeed = 1f;
+    public float maxSpeed = 1f;
+    public float accelerationTime = 1f;
+
+    private float acceleration;
+    private Vector3 velocity = Vector3.zero;
 
     void Start()
     {
@@ -24,6 +28,9 @@ public class Player : MonoBehaviour
         Debug.Log(NormalizeVector(new Vector2(3, 4)));
         Debug.Log(NormalizeVector(new Vector2(-3, 2)));
         Debug.Log(NormalizeVector(new Vector2(1.5f, -3.5f)));
+
+        //wk3 in class
+        acceleration = maxSpeed / accelerationTime; //a = delta v / delta t
     }
 
     // Update is called once per frame
@@ -60,6 +67,7 @@ public class Player : MonoBehaviour
         //wk3 exe:player controller
         PlayerMovement();
        
+
       
     }
 
@@ -150,23 +158,32 @@ public class Player : MonoBehaviour
     {
         if (Keyboard.current.leftArrowKey.isPressed)
         {
-            transform.position += moveSpeed * Vector3.left;
+            velocity += Time.deltaTime * acceleration * Vector3.left;
         }
 
         if (Keyboard.current.rightArrowKey.isPressed)
         {
-            transform.position += moveSpeed * Vector3.right;
+            velocity += Time.deltaTime * acceleration * Vector3.right;
         }
 
         if (Keyboard.current.upArrowKey.isPressed)
         {
-            transform .position += moveSpeed * Vector3.up;
+            velocity += Time.deltaTime * acceleration * Vector3.up;
         }
 
         if (Keyboard.current.downArrowKey.isPressed)
         {
-            transform.position += moveSpeed * Vector3.down;
+            velocity += Time.deltaTime * acceleration * Vector3.down;
         }
+
+        if(velocity.magnitude > maxSpeed)
+        {
+            velocity = maxSpeed * velocity.normalized;
+        }
+
+        velocity = Vector3.ClampMagnitude(velocity, maxSpeed);   
+
+        transform.position += Time.deltaTime * velocity;
     }
 
 }
