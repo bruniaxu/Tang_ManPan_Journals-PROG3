@@ -22,6 +22,10 @@ public class Player : MonoBehaviour
     private float acceleration;
     private Vector3 velocity = Vector3.zero;
 
+    //wk3 journal
+    public float decelerationTime = 1f;
+    private float deceleration;
+
     void Start()
     {
         //wk2 in class
@@ -31,6 +35,8 @@ public class Player : MonoBehaviour
 
         //wk3 in class
         acceleration = maxSpeed / accelerationTime; //a = delta v / delta t
+        //wk3 journal
+        deceleration = maxSpeed / decelerationTime;
     }
 
     // Update is called once per frame
@@ -176,14 +182,31 @@ public class Player : MonoBehaviour
             velocity += Time.deltaTime * acceleration * Vector3.down;
         }
 
-        if(velocity.magnitude > maxSpeed)
+        if (!Keyboard.current.leftArrowKey.isPressed && !Keyboard.current.rightArrowKey.isPressed && !Keyboard.current.upArrowKey.isPressed && !Keyboard.current.downArrowKey.isPressed)
+        {
+            if(velocity.magnitude > deceleration* Time.deltaTime)
+            {
+                velocity -= velocity.normalized * deceleration * Time.deltaTime;
+            }
+            else
+            {
+                velocity = Vector3.zero;
+            }
+        }
+      
+
+        if (velocity.magnitude > maxSpeed)
         {
             velocity = maxSpeed * velocity.normalized;
         }
+     
 
         velocity = Vector3.ClampMagnitude(velocity, maxSpeed);   
 
         transform.position += Time.deltaTime * velocity;
+
+       
+
     }
 
 }
