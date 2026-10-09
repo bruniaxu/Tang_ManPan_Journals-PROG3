@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using NUnit.Framework.Constraints;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -30,8 +31,12 @@ public class Player : MonoBehaviour
     private float deceleration;
     #endregion
 
+    //journal 4 task1
     public float radarRadius = 3f;
     public int radarSideCount = 8;
+    //task2
+
+
 
     void Start()
     {
@@ -84,7 +89,9 @@ public class Player : MonoBehaviour
         PlayerMovement();
         #endregion
 
+        //j4 task1
         enemyRadar(radarRadius, radarSideCount);
+
 
     }
 
@@ -223,7 +230,6 @@ public class Player : MonoBehaviour
     #endregion
 
     //Journal 4 
-
     void enemyRadar(float radius, int numberOfSides)
     {
         float stepAngle = 360f / numberOfSides;
@@ -232,7 +238,12 @@ public class Player : MonoBehaviour
         stepAngle *= Mathf.Deg2Rad;
 
         float currentAngle = stepAngle;
-
+        float distance = Vector3.Distance(transform.position, enemyTransform.position);
+        Color radarColor = Color.green;
+        if(distance <= radius)
+        {
+            radarColor = Color.red;
+        }
 
         for (int i = 0; i < numberOfSides; i++)
         {
@@ -244,27 +255,18 @@ public class Player : MonoBehaviour
             Vector3 newPoint = new(xPos, yPos);
 
             points.Add(newPoint);
-
             currentAngle += stepAngle;
-
-
         }
 
-        for (int i = 0; i < numberOfSides - 1; ++i)
+        for (int i = 0; i < numberOfSides - 1; i++)
         {
             Vector3 startPoint = transform.position + points[i];
             Vector3 endPoint = transform.position + points[i + 1];
-            Debug.DrawLine(startPoint, endPoint, Color.green);
-
-           
-
-
+            Debug.DrawLine(startPoint, endPoint, radarColor);
         }
-
         Vector3 lastPoint = transform.position + points[numberOfSides - 1];
         Vector3 firstPoint = transform.position + points[0];
-
-        Debug.DrawLine(lastPoint, firstPoint, Color.green);
-
+        Debug.DrawLine(lastPoint, firstPoint, radarColor);
     }
+
 }
