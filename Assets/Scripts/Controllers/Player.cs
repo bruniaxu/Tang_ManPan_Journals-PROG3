@@ -4,10 +4,12 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    #region week2
     //wk2 in class
     public Transform enemyTransform;
     public GameObject bombPrefab;
     public List<Transform> asteroidTransforms;
+    #endregion
 
     #region journal 2
     public float bombTrailSpacing;
@@ -15,6 +17,7 @@ public class Player : MonoBehaviour
     public float inMaxRange;
     #endregion
 
+    #region week 3
     //wk3 in class
     public float maxSpeed = 1f;
     public float accelerationTime = 1f;
@@ -25,9 +28,14 @@ public class Player : MonoBehaviour
     //wk3 journal
     public float decelerationTime = 1f;
     private float deceleration;
+    #endregion
+
+    public float radarRadius = 3f;
+    public int radarSideCount = 8;
 
     void Start()
     {
+        #region week2 n 3 in class + journal
         //wk2 in class
         Debug.Log(NormalizeVector(new Vector2(3, 4)));
         Debug.Log(NormalizeVector(new Vector2(-3, 2)));
@@ -37,6 +45,7 @@ public class Player : MonoBehaviour
         acceleration = maxSpeed / accelerationTime; //a = delta v / delta t
         //wk3 journal
         deceleration = maxSpeed / decelerationTime;
+        #endregion
     }
 
     // Update is called once per frame
@@ -58,7 +67,7 @@ public class Player : MonoBehaviour
         {
             SpawnBombOnRandomCorner(2f);
         }
- 
+
         if (Keyboard.current.wKey.wasPressedThisFrame)
         {
             WarpPlayer(enemyTransform, 1f);
@@ -70,11 +79,13 @@ public class Player : MonoBehaviour
         }
         #endregion
 
+        #region week3
         //wk3 exe:player controller
         PlayerMovement();
-       
+        #endregion
 
-      
+        enemyRadar(radarRadius, radarSideCount);
+
     }
 
     #region Journal2
@@ -115,13 +126,16 @@ public class Player : MonoBehaviour
         if (randomCorner == 0)
         {
             cornerDirection = Vector3.up + Vector3.right;
-        }else if (randomCorner == 1)
+        }
+        else if (randomCorner == 1)
         {
             cornerDirection = Vector3.up + Vector3.left;
-        }else if (randomCorner == 2)
+        }
+        else if (randomCorner == 2)
         {
             cornerDirection = Vector3.down + Vector3.right;
-        }else if (randomCorner == 3)
+        }
+        else if (randomCorner == 3)
         {
             cornerDirection = Vector3.down + Vector3.left;
         }
@@ -159,6 +173,7 @@ public class Player : MonoBehaviour
     }
     #endregion
 
+    #region week 3
     //wk3 exe:player controller
     private void PlayerMovement()
     {
@@ -184,7 +199,7 @@ public class Player : MonoBehaviour
 
         if (!Keyboard.current.leftArrowKey.isPressed && !Keyboard.current.rightArrowKey.isPressed && !Keyboard.current.upArrowKey.isPressed && !Keyboard.current.downArrowKey.isPressed)
         {
-            if(velocity.magnitude > deceleration* Time.deltaTime)
+            if (velocity.magnitude > deceleration * Time.deltaTime)
             {
                 velocity -= velocity.normalized * deceleration * Time.deltaTime;
             }
@@ -193,20 +208,63 @@ public class Player : MonoBehaviour
                 velocity = Vector3.zero;
             }
         }
-      
+
 
         if (velocity.magnitude > maxSpeed)
         {
             velocity = maxSpeed * velocity.normalized;
         }
-     
 
-        velocity = Vector3.ClampMagnitude(velocity, maxSpeed);   
+
+        velocity = Vector3.ClampMagnitude(velocity, maxSpeed);
 
         transform.position += Time.deltaTime * velocity;
+    }
+    #endregion
 
-       
+    //Journal 4 
+
+    void enemyRadar(float radius, int numberOfSides)
+    {
+        float stepAngle = 360f / numberOfSides;
+        List<Vector3> points = new();
+
+        stepAngle *= Mathf.Deg2Rad;
+
+        float currentAngle = stepAngle;
+
+
+        for (int i = 0; i < numberOfSides; i++)
+        {
+
+            float xPos = Mathf.Cos(currentAngle) * radius;
+
+            float yPos = Mathf.Sin(currentAngle) * radius;
+
+            Vector3 newPoint = new(xPos, yPos);
+
+            points.Add(newPoint);
+
+            currentAngle += stepAngle;
+
+
+        }
+
+        for (int i = 0; i < numberOfSides - 1; ++i)
+        {
+            Vector3 startPoint = transform.position + points[i];
+            Vector3 endPoint = transform.position + points[i + 1];
+            Debug.DrawLine(startPoint, endPoint, Color.green);
+
+           
+
+
+        }
+
+        Vector3 lastPoint = transform.position + points[numberOfSides - 1];
+        Vector3 firstPoint = transform.position + points[0];
+
+        Debug.DrawLine(lastPoint, firstPoint, Color.green);
 
     }
-
 }
