@@ -35,7 +35,8 @@ public class Player : MonoBehaviour
     public float radarRadius = 3f;
     public int radarSideCount = 8;
     //task2
-
+    public GameObject powerUp;
+    public int powerUpNumber = 3;
 
 
     void Start()
@@ -91,8 +92,10 @@ public class Player : MonoBehaviour
 
         //j4 task1
         enemyRadar(radarRadius, radarSideCount);
-
-
+        if (Keyboard.current.pKey.wasPressedThisFrame)
+        {
+            spawnPowerUps(3f, powerUpNumber);
+        }
     }
 
     #region Journal2
@@ -267,6 +270,23 @@ public class Player : MonoBehaviour
         Vector3 lastPoint = transform.position + points[numberOfSides - 1];
         Vector3 firstPoint = transform.position + points[0];
         Debug.DrawLine(lastPoint, firstPoint, radarColor);
+    }
+
+    //task2
+    void spawnPowerUps(float radius, int powerUPNum)
+    {
+        float stepAngle = 360f / powerUPNum;
+        stepAngle *= Mathf.Deg2Rad;
+        float currentAngle = 0f;
+
+        for (int i = 0; i < powerUPNum; i++)
+        {
+            float xPosition = Mathf.Cos(currentAngle) * radius;
+            float yPosition = Mathf.Sin(currentAngle) * radius;
+            Vector3 powerUpSpawnPosition = transform.position + new Vector3(xPosition, yPosition, 0f);
+            Instantiate(powerUp, powerUpSpawnPosition, Quaternion.identity);
+            currentAngle += stepAngle;
+        }
     }
 
 }
