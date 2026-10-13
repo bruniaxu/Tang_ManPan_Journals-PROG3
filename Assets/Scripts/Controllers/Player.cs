@@ -31,12 +31,14 @@ public class Player : MonoBehaviour
     private float deceleration;
     #endregion
 
+    #region J4
     //journal 4 task1
     public float radarRadius = 3f;
     public int radarSideCount = 8;
     //task2
     public GameObject powerUp;
     public int powerUpNumber = 3;
+    #endregion
 
 
     void Start()
@@ -90,12 +92,14 @@ public class Player : MonoBehaviour
         PlayerMovement();
         #endregion
 
+        #region J4
         //j4 task1
-        enemyRadar(radarRadius, radarSideCount);
-        if (Keyboard.current.pKey.wasPressedThisFrame)
-        {
-            spawnPowerUps(3f, powerUpNumber);
-        }
+        //enemyRadar(radarRadius, radarSideCount);
+        //if (Keyboard.current.pKey.wasPressedThisFrame)
+        //{
+        //    spawnPowerUps(3f, powerUpNumber);
+        //}
+        #endregion
     }
 
     #region Journal2
@@ -231,62 +235,62 @@ public class Player : MonoBehaviour
         transform.position += Time.deltaTime * velocity;
     }
     #endregion
-
+    #region Journal4
     //Journal 4 
-    void enemyRadar(float radius, int numberOfSides)
-    {
-        float stepAngle = 360f / numberOfSides;
-        List<Vector3> points = new();
+    //void enemyRadar(float radius, int numberOfSides)
+    //{
+    //    float stepAngle = 360f / numberOfSides;
+    //    List<Vector3> points = new();
 
-        stepAngle *= Mathf.Deg2Rad;
+    //    stepAngle *= Mathf.Deg2Rad;
 
-        float currentAngle = stepAngle;
-        float distance = Vector3.Distance(transform.position, enemyTransform.position);
-        Color radarColor = Color.green;
-        if(distance <= radius)
-        {
-            radarColor = Color.red;
-        }
+    //    float currentAngle = stepAngle;
+    //    float distance = Vector3.Distance(transform.position, enemyTransform.position);
+    //    Color radarColor = Color.green;
+    //    if(distance <= radius)
+    //    {
+    //        radarColor = Color.red;
+    //    }
 
-        for (int i = 0; i < numberOfSides; i++)
-        {
+    //    for (int i = 0; i < numberOfSides; i++)
+    //    {
 
-            float xPos = Mathf.Cos(currentAngle) * radius;
+    //        float xPos = Mathf.Cos(currentAngle) * radius;
 
-            float yPos = Mathf.Sin(currentAngle) * radius;
+    //        float yPos = Mathf.Sin(currentAngle) * radius;
 
-            Vector3 newPoint = new(xPos, yPos);
+    //        Vector3 newPoint = new(xPos, yPos);
 
-            points.Add(newPoint);
-            currentAngle += stepAngle;
-        }
+    //        points.Add(newPoint);
+    //        currentAngle += stepAngle;
+    //    }
 
-        for (int i = 0; i < numberOfSides - 1; i++)
-        {
-            Vector3 startPoint = transform.position + points[i];
-            Vector3 endPoint = transform.position + points[i + 1];
-            Debug.DrawLine(startPoint, endPoint, radarColor);
-        }
-        Vector3 lastPoint = transform.position + points[numberOfSides - 1];
-        Vector3 firstPoint = transform.position + points[0];
-        Debug.DrawLine(lastPoint, firstPoint, radarColor);
-    }
+    //    for (int i = 0; i < numberOfSides - 1; i++)
+    //    {
+    //        Vector3 startPoint = transform.position + points[i];
+    //        Vector3 endPoint = transform.position + points[i + 1];
+    //        Debug.DrawLine(startPoint, endPoint, radarColor);
+    //    }
+    //    Vector3 lastPoint = transform.position + points[numberOfSides - 1];
+    //    Vector3 firstPoint = transform.position + points[0];
+    //    Debug.DrawLine(lastPoint, firstPoint, radarColor);
+    //}
 
-    //task2
-    void spawnPowerUps(float radius, int powerUPNum)
-    {
-        float stepAngle = 360f / powerUPNum;
-        stepAngle *= Mathf.Deg2Rad;
-        float currentAngle = 0f;
+    ////task2
+    //void spawnPowerUps(float radius, int powerUPNum)
+    //{
+    //    float stepAngle = 360f / powerUPNum;
+    //    stepAngle *= Mathf.Deg2Rad;
+    //    float currentAngle = 0f;
 
-        for (int i = 0; i < powerUPNum; i++)
-        {
-            float xPosition = Mathf.Cos(currentAngle) * radius;
-            float yPosition = Mathf.Sin(currentAngle) * radius;
-            Vector3 powerUpSpawnPosition = transform.position + new Vector3(xPosition, yPosition, 0f);
-            Instantiate(powerUp, powerUpSpawnPosition, Quaternion.identity);
-            currentAngle += stepAngle;
-        }
-    }
-
+    //    for (int i = 0; i < powerUPNum; i++)
+    //    {
+    //        float xPosition = Mathf.Cos(currentAngle) * radius;
+    //        float yPosition = Mathf.Sin(currentAngle) * radius;
+    //        Vector3 powerUpSpawnPosition = transform.position + new Vector3(xPosition, yPosition, 0f);
+    //        Instantiate(powerUp, powerUpSpawnPosition, Quaternion.identity);
+    //        currentAngle += stepAngle;
+    //    }
+    //}
+    #endregion
 }
