@@ -40,6 +40,14 @@ public class Player : MonoBehaviour
     public int powerUpNumber = 3;
     #endregion
 
+    #region Final Assignment
+    public Transform pivotTransform;
+    public float orbitTriggerDistance = 1f;
+    private bool isOrbiting = false;
+    private float currentOrbitAngle = 0f;
+    private bool canOrbit = true;
+    #endregion
+
 
     void Start()
     {
@@ -100,6 +108,13 @@ public class Player : MonoBehaviour
         //    spawnPowerUps(3f, powerUpNumber);
         //}
         #endregion
+
+        //Final assignment mechanic 1 : orbit pivot rotation 
+        if (isOrbiting)
+        {
+            OrbitPlayer();
+        }
+        CheckEnemyDistance();
     }
 
     #region Journal2
@@ -292,5 +307,41 @@ public class Player : MonoBehaviour
     //        currentAngle += stepAngle;
     //    }
     //}
+    #endregion
+
+    #region Final Assignment
+    void OrbitPlayer()
+    {
+        float rotationAmount = 90f * Time.deltaTime;
+        pivotTransform.Rotate(0f, 0f, rotationAmount);
+        currentOrbitAngle += rotationAmount;
+
+        if (currentOrbitAngle >= 360f)
+        {
+            isOrbiting = false;
+            currentOrbitAngle = 0f;
+            transform.SetParent(null);
+        }
+    }
+
+    void CheckEnemyDistance()
+    {
+        float distance = Vector3.Distance(transform.position, enemyTransform.position);
+
+        if (distance > orbitTriggerDistance)
+        {
+            canOrbit = true;
+        }
+
+        if (distance <= orbitTriggerDistance && !isOrbiting && canOrbit)
+        {
+            isOrbiting = true;
+            canOrbit = false;
+            pivotTransform.position = enemyTransform.position;
+            pivotTransform.rotation = Quaternion.identity;
+            transform.SetParent(pivotTransform);
+            transform.localPosition = new Vector3(2f, 0f, 0f);
+        }
+    }
     #endregion
 }
