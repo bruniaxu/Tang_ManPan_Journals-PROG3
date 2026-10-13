@@ -43,9 +43,11 @@ public class Player : MonoBehaviour
     #region Final Assignment
     public Transform pivotTransform;
     public float orbitTriggerDistance = 1f;
+    public float orbitRadius = 2f;
+    public float orbitSpeed = 90f;
     private bool isOrbiting = false;
-    private float currentOrbitAngle = 0f;
     private bool canOrbit = true;
+    private float currentOrbitAngle = 0f;
     #endregion
 
 
@@ -110,11 +112,12 @@ public class Player : MonoBehaviour
         #endregion
 
         //Final assignment mechanic 1 : orbit pivot rotation 
+        CheckEnemyDistance();
+
         if (isOrbiting)
         {
             OrbitPlayer();
         }
-        CheckEnemyDistance();
     }
 
     #region Journal2
@@ -312,15 +315,28 @@ public class Player : MonoBehaviour
     #region Final Assignment
     void OrbitPlayer()
     {
-        float rotationAmount = 90f * Time.deltaTime;
-        pivotTransform.Rotate(0f, 0f, rotationAmount);
+        float rotationAmount = orbitSpeed * Time.deltaTime;
+
         currentOrbitAngle += rotationAmount;
+
+        if (currentOrbitAngle >= 360f)
+        {
+            currentOrbitAngle = 360f;
+        }
+
+        float angleInRadians = currentOrbitAngle * Mathf.Deg2Rad;
+
+        float xPosition = Mathf.Cos(angleInRadians) * orbitRadius;
+        float yPosition = Mathf.Sin(angleInRadians) * orbitRadius;
+
+        Vector3 orbitPosition = new Vector3(xPosition, yPosition, 0f);
+
+        transform.position = pivotTransform.position + orbitPosition;
 
         if (currentOrbitAngle >= 360f)
         {
             isOrbiting = false;
             currentOrbitAngle = 0f;
-            transform.SetParent(null);
         }
     }
 
@@ -328,7 +344,7 @@ public class Player : MonoBehaviour
     {
         float distance = Vector3.Distance(transform.position, enemyTransform.position);
 
-        if (distance > orbitTriggerDistance)
+        if (distance > orbitTriggerDistance && !isOrbiting)
         {
             canOrbit = true;
         }
@@ -337,10 +353,10 @@ public class Player : MonoBehaviour
         {
             isOrbiting = true;
             canOrbit = false;
+
+            currentOrbitAngle = 0f;
+
             pivotTransform.position = enemyTransform.position;
-            pivotTransform.rotation = Quaternion.identity;
-            transform.SetParent(pivotTransform);
-            transform.localPosition = new Vector3(2f, 0f, 0f);
         }
     }
     #endregion
