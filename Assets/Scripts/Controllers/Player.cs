@@ -48,6 +48,8 @@ public class Player : MonoBehaviour
     private bool isOrbiting = false;
     private bool canOrbit = true;
     private float currentOrbitAngle = 0f;
+    //bullet
+    public GameObject bulletPrefab;
     #endregion
 
 
@@ -117,6 +119,11 @@ public class Player : MonoBehaviour
         if (isOrbiting)
         {
             OrbitPlayer();
+        }
+
+        if (Keyboard.current.fKey.wasPressedThisFrame)
+        {
+            ShootBullet();
         }
     }
 
@@ -358,6 +365,13 @@ public class Player : MonoBehaviour
 
             pivotTransform.position = enemyTransform.position;
         }
+    }
+
+    void ShootBullet()
+    {
+        GameObject newBullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        Bullet bulletScript = newBullet.GetComponent<Bullet>();
+        bulletScript.enemyTransform = enemyTransform;
     }
     #endregion
 }
