@@ -8,9 +8,12 @@ public class PlayerController : MonoBehaviour
         left, right
     }
 
+    public float moveSpeed = 2f;
+    private Rigidbody2D body;
+
     void Start()
     {
-        
+        body = GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -22,12 +25,27 @@ public class PlayerController : MonoBehaviour
         // then passed in the to the MovementUpdate which should
         // manage the actual movement of the character.
 
+        if(Keyboard.current != null)
+        {
+            if(Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed)
+            {
+                playerInput.x -= 1f;
+            }
+
+            if (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed)
+            {
+                playerInput.x += 1f;
+            }
+
+        }
+
         MovementUpdate(playerInput);
     }
 
-    private void MovementUpdate(Vector2 playerInput)
+    public void MovementUpdate(Vector2 playerInput)
     {
-
+        float horizontalSpeed = playerInput.x * moveSpeed;
+        body.linearVelocity = new Vector2(horizontalSpeed, body.linearVelocity.y);
     }
 
     public bool IsWalking()
