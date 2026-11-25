@@ -8,10 +8,12 @@ public class PlayerController : MonoBehaviour
         left, right
     }
     //task1
-    public float moveSpeed = 2f;
+    public float moveSpeed = 3f;
     private Rigidbody2D body;
     //task2
     private FacingDirection facingDirection = FacingDirection.left;
+    
+
     void Start()
     {
         body = GetComponent<Rigidbody2D>();
@@ -43,7 +45,7 @@ public class PlayerController : MonoBehaviour
         MovementUpdate(playerInput);
     }
 
-    public void MovementUpdate(Vector2 playerInput)
+    private void MovementUpdate(Vector2 playerInput)
     {
         float horizontalSpeed = playerInput.x * moveSpeed;
         body.linearVelocity = new Vector2(horizontalSpeed, body.linearVelocity.y);
@@ -59,8 +61,13 @@ public class PlayerController : MonoBehaviour
     }
     public bool IsGrounded()
     {
+        if(body.linearVelocity.y > -0.01f && body.linearVelocity.y < 0.01f)
+        {
+            return true;
+        }
         return false;
     }
+
 
     public FacingDirection GetFacingDirection()
     {
